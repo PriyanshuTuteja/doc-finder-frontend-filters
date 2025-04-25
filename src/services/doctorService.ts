@@ -1,4 +1,3 @@
-
 import { Doctor } from "@/types/doctor";
 
 const API_URL = "https://srijandubey.github.io/campus-api-mock/SRM-C1-25.json";
@@ -13,22 +12,18 @@ export async function fetchDoctors(): Promise<Doctor[]> {
     
     const data = await response.json();
     
-    // Make sure we're getting an array of doctors
     if (!Array.isArray(data)) {
       console.error("API did not return an array of doctors");
       return [];
     }
     
-    // Process the data to ensure it matches our Doctor type
     const processedDoctors: Doctor[] = data.map((doctor: any) => {
-      // Extract specialty from specialities array
       let specialty: string[] = [];
       
       if (Array.isArray(doctor.specialities)) {
         specialty = doctor.specialities.map((s: any) => s?.name || "").filter(Boolean);
       }
 
-      // Map to our Doctor type with fallbacks for missing fields
       return {
         id: doctor.id || String(Math.random()),
         name: doctor.name || "Unknown",
@@ -41,9 +36,11 @@ export async function fetchDoctors(): Promise<Doctor[]> {
         ].filter(Boolean),
         availability: doctor.availability || "",
         degree: doctor.degree || "",
-        rating: doctor.rating || 0,
-        ratingCount: doctor.ratingCount || 0,
-        image: doctor.photo || ""
+        rating: parseFloat(doctor.rating) || 0,
+        ratingCount: parseInt(doctor.ratingCount, 10) || 0,
+        image: doctor.photo || "",
+        hospital: doctor.hospital || "Hospital not specified",
+        location: doctor.location || "Location not specified"
       };
     });
     
@@ -59,10 +56,8 @@ export function getUniqueSpecialties(doctors: Doctor[]): string[] {
     return [];
   }
   
-  // Extract all specialties from all doctors
   const allSpecialties = doctors.flatMap(doctor => doctor.specialty || []).filter(Boolean);
   
-  // Create a Set to remove duplicates and convert back to array
   const uniqueSpecialties = [...new Set(allSpecialties)];
   
   return uniqueSpecialties.sort();
