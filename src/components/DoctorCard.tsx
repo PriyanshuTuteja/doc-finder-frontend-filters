@@ -1,4 +1,6 @@
+
 import { Button } from "@/components/ui/button";
+import { Building2, MapPin } from "lucide-react";
 import { Doctor } from "@/types/doctor";
 
 interface DoctorCardProps {
@@ -6,7 +8,6 @@ interface DoctorCardProps {
 }
 
 const DoctorCard = ({ doctor }: DoctorCardProps) => {
-  // Safely access properties with fallbacks
   const name = doctor.name || "Unknown Doctor";
   const specialty = doctor.specialty || [];
   const experience = doctor.experience || 0;
@@ -14,9 +15,10 @@ const DoctorCard = ({ doctor }: DoctorCardProps) => {
   const consultationMode = doctor.consultationMode || [];
   const image = doctor.image || "/placeholder.svg";
   const degree = doctor.degree || "";
+  const hospital = doctor.hospital || "Hospital not specified";
+  const location = doctor.location || "Location not specified";
 
   const handleBookAppointment = () => {
-    // Currently, this does nothing as requested
     console.log(`Booking appointment with ${name}`);
   };
 
@@ -57,22 +59,15 @@ const DoctorCard = ({ doctor }: DoctorCardProps) => {
               </span>
             ))}
           </div>
-          
-          <div className="flex justify-between items-center mt-3">
-            <div>
-              <span className="text-sm font-medium" data-testid="doctor-experience">
-                {experience} years exp
-              </span>
-            </div>
-            
-            <div className="text-right">
-              <p className="font-semibold text-brand-blue" data-testid="doctor-fee">
-                ₹{fee}
-              </p>
-              <p className="text-xs text-gray-500">
-                {consultationMode.join(" / ")}
-              </p>
-            </div>
+
+          <div className="flex items-center gap-2 text-gray-600 text-sm mb-1">
+            <Building2 className="w-4 h-4" />
+            <span>{hospital}</span>
+          </div>
+
+          <div className="flex items-center gap-2 text-gray-600 text-sm">
+            <MapPin className="w-4 h-4" />
+            <span>{location}</span>
           </div>
         </div>
       </div>

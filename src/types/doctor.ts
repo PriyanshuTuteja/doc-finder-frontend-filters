@@ -1,4 +1,3 @@
-
 export interface Doctor {
   name: string;
   specialty: string[];
@@ -11,6 +10,8 @@ export interface Doctor {
   rating: number;
   ratingCount: number;
   image: string;
+  hospital: string;
+  location: string;
 }
 
 export interface FilterState {
