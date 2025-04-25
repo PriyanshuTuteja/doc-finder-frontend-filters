@@ -40,6 +40,12 @@ const FilterPanel = ({ specialties, filters, onFilterChange }: FilterPanelProps)
     });
   };
 
+  // Helper function to safely create a test ID for a specialty
+  const createSpecialtyTestId = (specialty: string) => {
+    if (!specialty) return "filter-specialty-unknown";
+    return `filter-specialty-${specialty.replace(/\//g, "-")}`;
+  };
+
   return (
     <div className="bg-white p-4 rounded-lg shadow-card">
       {/* Consultation Mode Filter */}
@@ -89,7 +95,7 @@ const FilterPanel = ({ specialties, filters, onFilterChange }: FilterPanelProps)
                 checked={filters.specialties.includes(specialty)}
                 onChange={(e) => handleSpecialtyChange(specialty, e.target.checked)}
                 className="h-4 w-4 text-brand-blue rounded"
-                data-testid={`filter-specialty-${specialty.replace("/", "-")}`}
+                data-testid={createSpecialtyTestId(specialty)}
               />
               <Label htmlFor={`specialty-${specialty}`}>{specialty}</Label>
             </div>
