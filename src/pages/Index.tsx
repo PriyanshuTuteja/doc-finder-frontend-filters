@@ -16,7 +16,7 @@ const Index = () => {
   const [error, setError] = useState<string | null>(null);
   const [suggestions, setSuggestions] = useState<Doctor[]>([]);
   
-  // Filter state
+  // Filter state with default values to prevent undefined errors
   const [filters, setFilters] = useState<FilterState>({
     consultationType: undefined,
     specialties: [],
@@ -33,18 +33,31 @@ const Index = () => {
       try {
         setIsLoading(true);
         const data = await fetchDoctors();
-        setDoctors(data);
-        setFilteredDoctors(data);
         
-        // Extract unique specialties
-        const uniqueSpecialties = getUniqueSpecialties(data);
-        setSpecialties(uniqueSpecialties);
+        if (Array.isArray(data)) {
+          setDoctors(data);
+          setFilteredDoctors(data);
+          
+          // Extract unique specialties
+          const uniqueSpecialties = getUniqueSpecialties(data);
+          setSpecialties(uniqueSpecialties);
+        } else {
+          // Handle case where data is not an array
+          console.error("Invalid data format received from API");
+          setError("Failed to load doctor data: invalid format");
+          setDoctors([]);
+          setFilteredDoctors([]);
+          setSpecialties([]);
+        }
         
         setIsLoading(false);
       } catch (err) {
         setError("Failed to load doctor data");
         setIsLoading(false);
         console.error(err);
+        setDoctors([]);
+        setFilteredDoctors([]);
+        setSpecialties([]);
       }
     };
     

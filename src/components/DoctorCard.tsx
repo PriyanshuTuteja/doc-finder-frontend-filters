@@ -6,6 +6,15 @@ interface DoctorCardProps {
 }
 
 const DoctorCard = ({ doctor }: DoctorCardProps) => {
+  // Safely access properties with fallbacks
+  const name = doctor.name || "Unknown Doctor";
+  const specialty = doctor.specialty || [];
+  const experience = doctor.experience || 0;
+  const fee = doctor.fee || 0;
+  const consultationMode = doctor.consultationMode || [];
+  const image = doctor.image || "/placeholder.svg";
+  const degree = doctor.degree || "";
+
   return (
     <div 
       className="bg-white rounded-lg shadow-card p-4 hover:shadow-lg transition-shadow" 
@@ -14,8 +23,8 @@ const DoctorCard = ({ doctor }: DoctorCardProps) => {
       <div className="flex items-start gap-4">
         <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200 flex-shrink-0">
           <img 
-            src={doctor.image || "/placeholder.svg"} 
-            alt={doctor.name} 
+            src={image} 
+            alt={name} 
             className="w-full h-full object-cover"
             onError={(e) => {
               const target = e.target as HTMLImageElement;
@@ -26,15 +35,15 @@ const DoctorCard = ({ doctor }: DoctorCardProps) => {
         
         <div className="flex-1">
           <h3 className="font-semibold text-lg mb-1" data-testid="doctor-name">
-            {doctor.name}
+            {name}
           </h3>
           
           <p className="text-sm text-gray-600 mb-1">
-            {doctor.degree}
+            {degree}
           </p>
           
           <div className="mb-2 flex flex-wrap gap-1" data-testid="doctor-specialty">
-            {doctor.specialty.map((spec, index) => (
+            {specialty.map((spec, index) => (
               <span 
                 key={index} 
                 className="inline-block bg-brand-lightBlue text-brand-blue text-xs px-2 py-1 rounded"
@@ -47,16 +56,16 @@ const DoctorCard = ({ doctor }: DoctorCardProps) => {
           <div className="flex justify-between items-center mt-3">
             <div>
               <span className="text-sm font-medium" data-testid="doctor-experience">
-                {doctor.experience} years exp
+                {experience} years exp
               </span>
             </div>
             
             <div className="text-right">
               <p className="font-semibold text-brand-blue" data-testid="doctor-fee">
-                ₹{doctor.fee}
+                ₹{fee}
               </p>
               <p className="text-xs text-gray-500">
-                {doctor.consultationMode.join(" / ")}
+                {consultationMode.join(" / ")}
               </p>
             </div>
           </div>

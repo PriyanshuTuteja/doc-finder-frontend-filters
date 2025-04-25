@@ -11,6 +11,9 @@ interface FilterPanelProps {
 }
 
 const FilterPanel = ({ specialties, filters, onFilterChange }: FilterPanelProps) => {
+  // Ensure specialties is always an array, even if undefined
+  const safeSpecialties = specialties || [];
+  
   const handleConsultationTypeChange = (value: string) => {
     onFilterChange({
       ...filters,
@@ -19,7 +22,9 @@ const FilterPanel = ({ specialties, filters, onFilterChange }: FilterPanelProps)
   };
 
   const handleSpecialtyChange = (specialty: string, checked: boolean) => {
-    let newSpecialties = [...filters.specialties];
+    // Ensure filters.specialties is always an array
+    const currentSpecialties = filters.specialties || [];
+    let newSpecialties = [...currentSpecialties];
     
     if (checked) {
       newSpecialties.push(specialty);
@@ -87,12 +92,12 @@ const FilterPanel = ({ specialties, filters, onFilterChange }: FilterPanelProps)
           Specialty
         </h3>
         <div className="space-y-2 max-h-64 overflow-y-auto">
-          {specialties.map((specialty) => (
+          {safeSpecialties.map((specialty) => (
             <div key={specialty} className="flex items-center space-x-2">
               <input
                 type="checkbox"
                 id={`specialty-${specialty}`}
-                checked={filters.specialties.includes(specialty)}
+                checked={(filters.specialties || []).includes(specialty)}
                 onChange={(e) => handleSpecialtyChange(specialty, e.target.checked)}
                 className="h-4 w-4 text-brand-blue rounded"
                 data-testid={createSpecialtyTestId(specialty)}
