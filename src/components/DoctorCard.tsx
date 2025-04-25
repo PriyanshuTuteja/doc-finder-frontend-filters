@@ -1,4 +1,4 @@
-
+import { Button } from "@/components/ui/button";
 import { Doctor } from "@/types/doctor";
 
 interface DoctorCardProps {
@@ -14,6 +14,11 @@ const DoctorCard = ({ doctor }: DoctorCardProps) => {
   const consultationMode = doctor.consultationMode || [];
   const image = doctor.image || "/placeholder.svg";
   const degree = doctor.degree || "";
+
+  const handleBookAppointment = () => {
+    // Currently, this does nothing as requested
+    console.log(`Booking appointment with ${name}`);
+  };
 
   return (
     <div 
@@ -70,6 +75,30 @@ const DoctorCard = ({ doctor }: DoctorCardProps) => {
             </div>
           </div>
         </div>
+      </div>
+      
+      <div className="flex justify-between items-center mt-3">
+        <div>
+          <span className="text-sm font-medium" data-testid="doctor-experience">
+            {experience} years exp
+          </span>
+        </div>
+        
+        <div className="text-right">
+          <p className="font-semibold text-brand-blue" data-testid="doctor-fee">
+            ₹{fee}
+          </p>
+          <p className="text-xs text-gray-500">
+            {consultationMode.join(" / ")}
+          </p>
+        </div>
+        
+        <Button 
+          onClick={handleBookAppointment}
+          className="ml-4"
+        >
+          Book Appointment
+        </Button>
       </div>
     </div>
   );
